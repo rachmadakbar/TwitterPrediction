@@ -15,10 +15,10 @@ import java.util.logging.Logger;
  */
 public class HaversineAndPath {
 
-    Location from,to;
+    Location from, to;
     double[] point1, point2;
-    
-    public HaversineAndPath(String[] from, String[] to){
+
+    public HaversineAndPath(String[] from, String[] to) {
         try {
             this.from = new Location(from[0], from[1]);
             this.to = new Location(to[0], to[1]);
@@ -29,59 +29,43 @@ public class HaversineAndPath {
             Logger.getLogger(HaversineAndPath.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void getPoint(){
-        if(this.from.way != null && this.from.way.equals("1") && this.to.way != null && this.to.way.equals("1")){
-            int mini = 1;
-            double min,temp;
-            min = distFrom(this.from.first1[0], this.from.first1[1], this.to.first1[0], this.to.first1[1]);
-            temp = distFrom(this.from.first1[0], this.from.first1[1], this.to.center1[0], this.to.center1[1]);
-            if(min>temp) min = temp;
-            temp = distFrom(this.from.first1[0], this.from.first1[1], this.to.last1[0], this.to.last1[1]);
-            if(min>temp) min = temp;
-            temp = distFrom(this.from.center1[0], this.from.center1[1], this.to.first1[0], this.to.first1[1]);
-            if(min>temp){
-                min = temp;
-                mini = 2;
-            }
-            temp = distFrom(this.from.center1[0], this.from.center1[1], this.to.center1[0], this.to.center1[1]);
-            if(min>temp) {
-                min = temp;
-                mini = 2;
-            }
-            temp = distFrom(this.from.center1[0], this.from.center1[1], this.to.last1[0], this.to.last1[1]);
-            if(min>temp) {
-                min = temp;
-                mini = 2;
-            }
-            temp = distFrom(this.from.last1[0], this.from.last1[1], this.to.first1[0], this.to.first1[1]);
-            if(min>temp){
-                min = temp;
-                mini = 3;
-            }
-            temp = distFrom(this.from.last1[0], this.from.last1[1], this.to.center1[0], this.to.center1[1]);
-            if(min>temp) {
-                min = temp;
-                mini = 3;
-            }
-            temp = distFrom(this.from.last1[0], this.from.last1[1], this.to.last1[0], this.to.last1[1]);
-            if(min>temp) {
-                min = temp;
-                mini = 3;
-            }
-            if(mini==1){
+
+    private void getPoint() {
+        if (this.from.way != null && this.from.way.equals("1")) {
+            if (this.to.way != null) {
+                double min, temp;
                 point1 = this.from.center1;
                 point2 = this.from.first1;
-            }else if(mini==2){
-                point1 = this.from.first1;
-                point2 = this.from.center1;
-            }else {
-                point1 = this.from.center1;
-                point2 = this.from.last1;
+                min = minDist(this.from.first1, this.to.first1, this.to.center1, this.to.last1);
+                temp = minDist(this.from.center1, this.to.first1, this.to.center1, this.to.last1);
+                if (min > temp) {
+                    min = temp;
+                    point1 = this.from.first1;
+                    point2 = this.from.center1;
+                }
+                temp = minDist(this.from.last1, this.to.first1, this.to.center1, this.to.last1);
+                if (min > temp) {
+                    min = temp;
+                    point1 = this.from.center1;
+                    point2 = this.from.last1;
+                }
             }
         }
     }
-    
+
+    private double minDist(double[] from, double[] to1, double[] to2, double[] to3) {
+        double result = distFrom(from[0], from[1], to1[0], to1[1]);
+        double temp = distFrom(from[0], from[1], to2[0], to2[1]);
+        if (result > temp) {
+            result = temp;
+        }
+        temp = distFrom(from[0], from[1], to3[0], to3[1]);
+        if (result > temp) {
+            result = temp;
+        }
+        return result;
+    }
+
     private double distFrom(double lat1, double lng1, double lat2, double lng2) {
         double earthRadius = 3958.75;
         double dLat = Math.toRadians(lat2 - lat1);
@@ -95,6 +79,5 @@ public class HaversineAndPath {
 
         return dist;
     }
-    
 
 }
