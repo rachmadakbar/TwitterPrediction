@@ -34,29 +34,36 @@ public class LocationEstimation extends HttpServlet {
         String from = request.getParameter("from");
         String to = request.getParameter("to");
         LocationEstimator loc = new LocationEstimator();
-//        PrintWriter out = response.getWriter();
-//        try {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet LocationEstimation</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>"+loc.estimate(from)+"</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        } finally {            
-//            out.close();
-//        }
+        String[] f = loc.estimate(from);
+        String[] t = loc.estimate(to);
+        HaversineAndPath hap = new HaversineAndPath(f, t);
+        PrintWriter out = response.getWriter();
+        try {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LocationEstimation</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>"+hap.from.name+"</h1>");
+            out.println("<h1>"+hap.from.way+"</h1>");
+            out.println("<h1>"+hap.from.center1[0]+"</h1>");
+            out.println("<h1>"+hap.to.name+"</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        } finally {            
+            out.close();
+        }
+        
         HttpSession route = request.getSession(true);
-        route.setAttribute("from", loc.estimate(from));
-        route.setAttribute("to", loc.estimate(to));
-        route.setAttribute("lat2", -6.1578301);
-        route.setAttribute("long2", 106.7597884);
-        route.setAttribute("lat1", -6.1618782);
-        route.setAttribute("long1", 106.7712146);
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
+        route.setAttribute("from", f[0]);
+        route.setAttribute("to", t[0]);
+        route.setAttribute("lat2", hap.point2[0]);
+        route.setAttribute("long2", hap.point2[1]);
+        route.setAttribute("lat1", hap.point1[0]);
+        route.setAttribute("long1", hap.point1[1]);
+        //request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -37,7 +37,7 @@ public class LocationEstimator {
         kecamatan = new HashSet<String>();
     }
     
-    public String estimate(String input) {
+    public String[] estimate(String input) {
         clear();
         token = input.split(" ");
         
@@ -66,8 +66,7 @@ public class LocationEstimator {
         String mallResult =  "";
         String kecamatanResult =  "";
         
-        String result = "";
-        
+        String [] result = {"data tidak ditemukan","miss"};        
         double primaryMax = 0.0;
         double secondaryMax = 0.0;
         double mallMax = 0.0;
@@ -109,17 +108,22 @@ public class LocationEstimator {
         if(primaryMax >= 0.5 && primaryMax*0.495049505 >= secondaryMax*0.267326733 && 
                 primaryMax*0.495049505 >= mallMax*0.089108911 &&  
                 primaryMax*0.495049505 >= kecamatanMax * 0.148514851){
-            result = primaryResult;
+            result[0] = primaryResult;
+            result[1] = "primary";
         }else if(secondaryMax >= 0.5 && secondaryMax*0.267326733 >= primaryMax*0.495049505 &&
                 secondaryMax*0.267326733 >= mallMax*0.089108911 &&
                 secondaryMax*0.267326733 >= kecamatanMax * 0.148514851){
-            result = secondaryResult;
+            result[0] = secondaryResult;
+            result[1] = "secondary";
         }else if(mallMax >= 0.5 && mallMax*0.089108911 >= primaryMax*0.495049505 &&
                 mallMax*0.089108911 >= secondaryMax*0.267326733 && 
                 mallMax*0.089108911 >= kecamatanMax * 0.148514851){
-            result = mallResult;
-        }else if(kecamatanMax >= 0.5) result = kecamatanResult;
-
+            result[0] = mallResult;
+            result[1] = "mall";
+        }else if(kecamatanMax >= 0.5){
+            result[0] = kecamatanResult;
+            result[1] = "kecamatan";
+        }
         return result;
     }
 
