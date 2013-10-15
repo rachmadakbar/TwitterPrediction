@@ -84,10 +84,10 @@
                 <div class="ui green inverted segment">
                     <p>From : <%=session.getAttribute("from")%></p>
                     <p>To : <%=session.getAttribute("to")%></p>
-                    <p>Lat1 : <%=session.getAttribute("lat1")%></p>
+<!--                    <p>Lat1 : <%=session.getAttribute("lat1")%></p>
                     <p>Long1 : <%=session.getAttribute("long1")%></p>
                     <p>Lat2 : <%=session.getAttribute("lat2")%></p>
-                    <p>Long2 : <%=session.getAttribute("long2")%></p>
+                    <p>Long2 : <%=session.getAttribute("long2")%></p>-->
                 </div>
                 <%}%>
                 <div class="ui inverted segment">

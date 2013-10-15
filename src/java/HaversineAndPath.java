@@ -24,31 +24,89 @@ public class HaversineAndPath {
             this.to = new Location(to[0], to[1]);
             point1 = new double[2];
             point2 = new double[2];
-            //getPoint();
         } catch (SQLException ex) {
             Logger.getLogger(HaversineAndPath.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }    
+    
+    private void setPoint(double[] a, double[] b){
+        point1 = a;
+        point2 = b;
     }
-
-    private void getPoint() {
-        if (this.from.way != null && this.from.way.equals("1")) {
+    
+    public void getPoint() {
+        double min, temp;
+        if (this.from.way != null) {
+            setPoint(from.first1,from.center1);
+            if (this.from.way.equals("1")) {
+                if (this.to.way != null) {
+                    min = minDist(this.from.first1, this.to.first1, this.to.center1, this.to.last1);
+                    temp = minDist(this.from.last1, this.to.first1, this.to.center1, this.to.last1);
+                    if (min > temp) {
+                        setPoint(from.center1,from.last1);
+                    }
+                } else {
+                    min = distFrom(this.from.first1[0], this.from.first1[1], this.to.point[0], this.to.point[1]);
+                    temp = distFrom(this.from.last1[0], this.from.last1[1], this.to.point[0], this.to.point[1]);
+                    if (min > temp) {
+                       setPoint(from.center1,from.last1);
+                    }
+                }
+            }else{
+                if (this.to.way != null) {
+                    min = minDist(this.from.center1, this.to.first1, this.to.center1, this.to.last1);
+                    temp = minDist(this.from.last1, this.to.first1, this.to.center1, this.to.last1);
+                    if (min > temp) {
+                        setPoint(from.center1,from.last1);
+                        min = temp;
+                    }
+                    temp = minDist(this.from.center2, this.to.first1, this.to.center1, this.to.last1);
+                    if (min > temp) {
+                        setPoint(from.first2,from.center2);
+                        min = temp;
+                    }
+                    temp = minDist(this.from.last2, this.to.first1, this.to.center1, this.to.last1);
+                    if (min > temp) {
+                        setPoint(from.center2,from.last2);
+                    }
+                }else{
+                    min = distFrom(this.from.first1[0], this.from.first1[1], this.to.point[0], this.to.point[1]);
+                    temp = distFrom(this.from.last1[0], this.from.last1[1], this.to.point[0], this.to.point[1]);
+                    if (min > temp) {
+                       setPoint(from.center1,from.last1);
+                       min = temp;
+                    }                    
+                    temp = distFrom(this.from.first2[0], this.from.first2[1], this.to.point[0], this.to.point[1]);
+                    if (min > temp) {
+                       setPoint(from.first2,from.center2);
+                       min = temp;
+                    }
+                    temp = distFrom(this.from.center2[0], this.from.center2[1], this.to.point[0], this.to.point[1]);
+                    if (min > temp) {
+                       setPoint(from.first2,from.center2);
+                       min = temp;
+                    }
+                    temp = distFrom(this.from.last2[0], this.from.last2[1], this.to.point[0], this.to.point[1]);
+                    if (min > temp) {
+                       setPoint(from.center2,from.last2);
+                    }
+                }
+            }
+        }else{
+            setPoint(from.point,to.first1);
             if (this.to.way != null) {
-                double min, temp;
-                point1 = this.from.center1;
-                point2 = this.from.first1;
-                min = minDist(this.from.first1, this.to.first1, this.to.center1, this.to.last1);
-                temp = minDist(this.from.center1, this.to.first1, this.to.center1, this.to.last1);
-                if (min > temp) {
+                min = distFrom(this.from.point[0], this.from.point[1], this.to.first1[0], this.to.first1[1]);
+                temp = distFrom(this.from.point[0], this.from.point[1], this.to.center1[0], this.to.center1[1]);
+                if(min>temp){
                     min = temp;
-                    point1 = this.from.first1;
-                    point2 = this.from.center1;
+                    setPoint(from.point,to.center1);
                 }
-                temp = minDist(this.from.last1, this.to.first1, this.to.center1, this.to.last1);
-                if (min > temp) {
-                    min = temp;
-                    point1 = this.from.center1;
-                    point2 = this.from.last1;
+                temp = distFrom(this.from.point[0], this.from.point[1], this.to.last1[0], this.to.last1[1]);
+                if(min>temp){
+                    setPoint(from.point,to.last1);
                 }
+            }else{
+                setPoint(from.point,to.point);
             }
         }
     }
