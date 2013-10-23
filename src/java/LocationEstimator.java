@@ -43,21 +43,25 @@ public class LocationEstimator {
         
         //cek jalan primary
         for (String token1 : token) {
+            if(token1.length() >= 3)
             match(primaryStreet, Character.toUpperCase(token1.charAt(0)) + token1.substring(1), "primary");
         }
         
         //cek jalan secondary
         for (String token1 : token) {
+            if(token1.length() >= 3)
             match(secondaryStreet, Character.toUpperCase(token1.charAt(0)) + token1.substring(1), "secondary");
         }
         
         //cek mall
         for (String token1 : token) {
+            if(token1.length() >= 3)
             match(mall, Character.toUpperCase(token1.charAt(0)) + token1.substring(1), "mall");
         }
 
         //cek kecamatan
         for (String token1 : token) {
+            if(token1.length() >= 3)
             match(kecamatan, Character.toUpperCase(token1.charAt(0)) + token1.substring(1), "kecamatan");
         }
         
@@ -65,7 +69,7 @@ public class LocationEstimator {
         String secondaryResult =  "";
         String mallResult =  "";
         String kecamatanResult =  "";
-        
+                
         String [] result = {"data tidak ditemukan","miss"};        
         double primaryMax = 0.0;
         double secondaryMax = 0.0;

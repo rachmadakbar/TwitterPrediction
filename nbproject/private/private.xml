@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/A:/TA/TwitterPrediction/src/java/Location.java</file>
+            <file>file:/A:/TA/TwitterPrediction/web/index.jsp</file>
+            <file>file:/A:/TA/TwitterPrediction/web/css/semantic.min.css</file>
+            <file>file:/A:/TA/TwitterPrediction/src/java/HaversineAndPath.java</file>
+            <file>file:/A:/TA/TwitterPrediction/src/java/LocationEstimation.java</file>
+            <file>file:/A:/TA/TwitterPrediction/src/java/LocationEstimator.java</file>
+        </group>
+    </open-files>
 </project-private>

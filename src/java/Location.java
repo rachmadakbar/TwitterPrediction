@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 public class Location {
 
     String name, type, way, id;
+    String firstNode1, firstNode2;
     double[] first1, center1, last1, first2, center2, last2;
     double[] point;
     ArrayList<double[]> node1, node2;
@@ -37,7 +38,7 @@ public class Location {
                 node1 = new ArrayList<double[]>();
                 node2 = new ArrayList<double[]>();
                 getExtendedDescription(name);
-                getAllNode();
+                getIntersectionNode();                
             } else {
                 point = new double[2];
                 getPoint(name, type);
@@ -79,7 +80,8 @@ public class Location {
                     temp[1] = resultSet.getObject(5).toString();
                     temp[2] = resultSet.getObject(6).toString();
                 }
-                first1 = getNode(temp[0]);
+                firstNode1 = temp[0];
+                first1 = getNode(firstNode1);
                 center1 = getNode(temp[1]);
                 last1 = getNode(temp[2]);
             } else {
@@ -95,10 +97,13 @@ public class Location {
                         temp[5] = resultSet.getObject(6).toString();
                     }
                 }
-                first1 = getNode(temp[0]);
+                
+                firstNode1 = temp[0];
+                first1 = getNode(firstNode1);
                 center1 = getNode(temp[1]);
                 last1 = getNode(temp[2]);
-                first2 = getNode(temp[3]);
+                firstNode2 = temp[3];
+                first2 = getNode(firstNode2);
                 center2 = getNode(temp[4]);
                 last2 = getNode(temp[5]);
             }
@@ -124,25 +129,44 @@ public class Location {
         }
     }
 
-    private void getAllNode() {
+    private void getIntersectionNode() {
         try {
-            if (way.equals("0")) {
-                query = "SELECT * FROM `street_path` WHERE `id_street` =" + id;
+            String ttemp;
+            if (way.equals("1")) {
+                query = "SELECT distinct id_node FROM street_path WHERE id_street =" + id;
                 ResultSet resultSet = statement.executeQuery(query);
+                ArrayList<String> temp = new ArrayList();
                 while (resultSet.next()) {
-                    node1.add(getNode(resultSet.getObject(2).toString()));
+                    ttemp = resultSet.getObject(1).toString();
+                    if(!firstNode1.equals(ttemp))                    
+                    temp.add(ttemp);
                 }
+                for(String s : temp)
+                    node1.add(getNode(s));
             } else {
-                query = "SELECT * FROM `path_1` WHERE `id_street` ="+id;
+                query = "SELECT distinct a.id_node FROM path_1 a, intersection b WHERE a.id_node = b.id_node AND a.id_street ="+id;
                 ResultSet resultSet = statement.executeQuery(query);
+                ArrayList<String> temp = new ArrayList();
+                
                 while (resultSet.next()) {
-                    node1.add(getNode(resultSet.getObject(2).toString()));
+                     ttemp = resultSet.getObject(1).toString();
+                    if(!firstNode1.equals(ttemp))                    
+                    temp.add(ttemp);
                 }
-                query = "SELECT * FROM `path_2` WHERE `id_street` ="+id;
+                for(String s : temp)
+                    node1.add(getNode(s));
+                
+                query = "SELECT distinct a.id_node FROM path_2 a, intersection b WHERE a.id_node = b.id_node AND a.id_street ="+id;
                 ResultSet resultSet2 = statement.executeQuery(query);
+                
+                temp = new ArrayList();
                 while (resultSet2.next()) {
-                    node2.add(getNode(resultSet2.getObject(2).toString()));
+                    ttemp = resultSet2.getObject(1).toString();
+                    if(!firstNode2.equals(ttemp))                    
+                    temp.add(ttemp);
                 }
+                for(String s : temp)
+                    node2.add(getNode(s));
             }
         } catch (SQLException ex) {
             Logger.getLogger(LocationEstimator.class.getName()).log(Level.SEVERE, null, ex);

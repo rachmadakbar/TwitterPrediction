@@ -48,7 +48,7 @@ public class LocationEstimation extends HttpServlet {
 //            out.println("</head>");
 //            out.println("<body>");
 //            out.println("<h1>"+hap.from.name+"</h1>");
-//            out.println("<h1>"+hap.from.way+"</h1>");
+//            out.println("<h1>"+hap.from.node1.size()+"</h1>");
 //            out.println("<h1>"+hap.from.center1[0]+"</h1>");
 //            out.println("<h1>"+hap.to.name+"</h1>");
 //            out.println("</body>");
@@ -56,7 +56,7 @@ public class LocationEstimation extends HttpServlet {
 //        } finally {            
 //            out.close();
 //        }
-        
+////        
         HttpSession route = request.getSession(true);
         route.setAttribute("from", f[0]);
         route.setAttribute("to", t[0]);
