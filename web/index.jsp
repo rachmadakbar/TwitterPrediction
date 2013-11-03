@@ -1,11 +1,12 @@
 <link rel="stylesheet" href="css/semantic.min.css" type="text/css" media="all">
+<script type="text/javascript" src="javascript/jquery.js" ></script>
 <script type="text/javascript" src="javascript/semantic.min.js" ></script>
+
 <html>
     <head>
         <script src="http://www.mapquestapi.com/sdk/js/v7.0.s/mqa.toolkit.js?key=Fmjtd%7Cluub2h0z21%2Cas%3Do5-9utad6"></script>
 
         <script type="text/javascript">
-
             /*An example of using the MQA.EventUtil to hook into the window load event and execute defined function
              passed in as the last parameter. You could alternatively create a plain function here and have it
              executed whenever you like (e.g. <body onload="yourfunction">).*/
@@ -17,15 +18,15 @@
                     elt: document.getElementById('map'), /*ID of element on the page where you want the map added*/
                     zoom: 10, /*initial zoom level of map*/
                     latLng: {lat: -6.180893, lng: 106.828461}, /*center of map in latitude/longitude*/
-                    mtype: 'map',                                /*map type (map)*/
-                    zoomOnDoubleClick:true 
+                    mtype: 'map', /*map type (map)*/
+                    zoomOnDoubleClick: true
                 };
 
                 /*Construct an instance of MQA.TileMap with the options object*/
                 window.map = new MQA.TileMap(options);
-                <%
-                if(session.getAttribute("lat1")!=null){                   
-                %>
+            <%
+                if (session.getAttribute("lat1") != null) {
+            %>
                 MQA.withModule('directions', function() {
                     /*Uses the MQA.TileMap.addRoute function (added to the TileMap with the directions module)
                      passing in an array of location objects as the only parameter.*/
@@ -34,7 +35,7 @@
                         {latLng: {lat: <%=session.getAttribute("lat2")%>, lng: <%=session.getAttribute("long2")%>}}
                     ]);
                 });
-                <%}%>
+            <%}%>
                 MQA.withModule('largezoom', function() {
 
                     map.addControl(
@@ -51,36 +52,113 @@
     <body class="ui teal inverted segment">
         <div class="ui grid">
             <div class="four wide column">
-                <form action = "/TwitterPrediction/LocationEstimation" method = "post">
-                    <div class="ui inverted form segment">
-                        <div class="field">
-                            <label>From</label>
-                            <div class="ui left labeled icon input">
-                                <input placeholder="From" type = "text" name = "from"  />
-                                <div class="ui corner label">
-                                    <i class="icon asterisk"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label>To</label>
-                            <div class="ui left labeled icon input">
-                                <input placeholder="To" type = "text" name = "to"  />
-                                <div class="ui corner label">
-                                    <i class="icon asterisk"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui error message">
-                            <div class="header">We noticed some issues</div>
-                        </div>
-                        <input type = "submit" value = "Submit" class="ui blue submit button"/>
+
+                <div class="ui fluid accordion">
+                    <div class="active title">
+                        <i class="dropdown icon"></i>
+                        1 Inputs :
                     </div>
-                </form>  
+                    <div class="active content">
+                        <form action = "/TwitterPrediction/LocationEstimation" method = "post">
+                            <div class="ui inverted form segment">
+                                <div class="field">
+                                    <label>Street</label>
+                                    <div class="ui left labeled icon input">
+                                        <input placeholder="Street" type = "text" name = "from"  />
+                                        <div class="ui corner label">
+                                            <i class="icon asterisk"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" value="1" name="mode" />
+                                <div class="ui error message">
+                                    <div class="header">We noticed some issues</div>
+                                </div>
+                                <input type = "submit" value = "Submit" class="ui blue submit button"/>
+                            </div>
+                        </form>  
+                    </div>
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        2 Inputs :
+                    </div>
+                    <div class="content">
+                        <form action = "/TwitterPrediction/LocationEstimation" method = "post">
+                            <div class="ui inverted form segment">
+                                <div class="field">
+                                    <label>From</label>
+                                    <div class="ui left labeled icon input">
+                                        <input placeholder="From" type = "text" name = "from"  />
+                                        <div class="ui corner label">
+                                            <i class="icon asterisk"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>To</label>
+                                    <div class="ui left labeled icon input">
+                                        <input placeholder="To" type = "text" name = "to"  />
+                                        <div class="ui corner label">
+                                            <i class="icon asterisk"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui error message">
+                                    <div class="header">We noticed some issues</div>
+                                </div>
+                                <input type="hidden" value="2" name="mode" />
+                                <input type = "submit" value = "Submit" class="ui blue submit button"/>
+                            </div>
+                        </form>  
+                    </div>
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        3 Inputs :
+                    </div>
+                    <div class="content">
+                        <form action = "/TwitterPrediction/LocationEstimation" method = "post">
+                            <div class="ui inverted form segment">
+                                <div class="field">
+                                    <label>Street</label>
+                                    <div class="ui left labeled icon input">
+                                        <input placeholder="Street" type = "text" name = "street"  />
+                                        <div class="ui corner label">
+                                            <i class="icon asterisk"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>From</label>
+                                    <div class="ui left labeled icon input">
+                                        <input placeholder="From" type = "text" name = "from"  />
+                                        <div class="ui corner label">
+                                            <i class="icon asterisk"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>To</label>
+                                    <div class="ui left labeled icon input">
+                                        <input placeholder="To" type = "text" name = "to"  />
+                                        <div class="ui corner label">
+                                            <i class="icon asterisk"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui error message">
+                                    <div class="header">We noticed some issues</div>
+                                </div>
+                                <input type="hidden" value="3" name="mode" />
+                                <input type = "submit" value = "Submit" class="ui blue submit button"/>
+                            </div>
+                        </form>  
+                    </div>
+                </div>
+
             </div>
-            
+
             <div class="ten wide column">
-                <% if(session.getAttribute("lat1")!=null) {%>
+                <% if (session.getAttribute("lat1") != null) {%>
                 <div class="ui green inverted segment">
                     <p>From : <%=session.getAttribute("from")%></p>
                     <p>To : <%=session.getAttribute("to")%></p>
@@ -92,12 +170,18 @@
                 <%}%>
                 <div class="ui inverted segment">
                     <div id='map' style='width:780px; height:500px;'></div>
+                    <div class="ui loader"></div>
                 </div>
 
             </div>
 
         </div>
+        <script type="text/javascript">
+            $(function() {
+                $('.ui.accordion').accordion();
+            });
 
+        </script>
 
     </body>
 </html>

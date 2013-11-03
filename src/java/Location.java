@@ -37,8 +37,7 @@ public class Location {
             if (type.equals("primary") || type.equals("secondary")) {
                 node1 = new ArrayList<double[]>();
                 node2 = new ArrayList<double[]>();
-                getExtendedDescription(name);
-                getIntersectionNode();                
+                getExtendedDescription(name);                
             } else {
                 point = new double[2];
                 getPoint(name, type);
@@ -129,7 +128,7 @@ public class Location {
         }
     }
 
-    private void getIntersectionNode() {
+    public void getIntersectionNode() {
         try {
             String ttemp;
             if (way.equals("1")) {
@@ -137,14 +136,13 @@ public class Location {
                 ResultSet resultSet = statement.executeQuery(query);
                 ArrayList<String> temp = new ArrayList();
                 while (resultSet.next()) {
-                    ttemp = resultSet.getObject(1).toString();
-                    if(!firstNode1.equals(ttemp))                    
+                    ttemp = resultSet.getObject(1).toString();                    
                     temp.add(ttemp);
                 }
                 for(String s : temp)
                     node1.add(getNode(s));
             } else {
-                query = "SELECT distinct a.id_node FROM path_1 a, intersection b WHERE a.id_node = b.id_node AND a.id_street ="+id;
+                query = "SELECT distinct id_node FROM path_1 WHERE id_street ="+id;
                 ResultSet resultSet = statement.executeQuery(query);
                 ArrayList<String> temp = new ArrayList();
                 
@@ -156,7 +154,7 @@ public class Location {
                 for(String s : temp)
                     node1.add(getNode(s));
                 
-                query = "SELECT distinct a.id_node FROM path_2 a, intersection b WHERE a.id_node = b.id_node AND a.id_street ="+id;
+                query = "SELECT distinct id_node FROM path_2 WHERE id_street ="+id;
                 ResultSet resultSet2 = statement.executeQuery(query);
                 
                 temp = new ArrayList();
